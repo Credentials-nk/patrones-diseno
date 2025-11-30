@@ -41,14 +41,13 @@ class PushNotificationChannel implements NotificationChannel {
 // Define la propiedad `channel` y el método `notify`
 
 abstract class Notification {
-  // TODO: Definir la propiedad `channel` de tipo NotificationChannel
-  // TODO: Definir el constructor de la clase
-  // TODO: Definir el método `notify` y `setChannel` (abstractos)
   constructor(protected channel: NotificationChannel){
     this.channel = channel
   }
 
-  abstract setChannel(channel: NotificationChannel):void;
+  setChannel(channel: NotificationChannel):void{
+    this.channel = channel;
+  }
 
   abstract notify(message: string): void
 }
@@ -58,40 +57,25 @@ abstract class Notification {
 class AlertNotification extends Notification {
   notify(message: string): void {
     console.log('\n%cNotificación de Alerta:', COLORS.red);
-    // TODO: Enviar el mensaje a través del canal
     this.channel.send(message)
-  }
-
-  setChannel(channel: NotificationChannel): void {
-    // TODO: Asignar el canal a la propiedad `channel`
-    this.channel = channel;
   }
 }
 
 class ReminderNotification extends Notification {
   notify(message: string): void {
     console.log('\n%cNotificación de Recordatorio:', COLORS.blue);
-    // TODO: Enviar el mensaje a través del canal
       this.channel.send(message)
   }
 
-  setChannel(channel: NotificationChannel): void {
-    // TODO: Asignar el canal a la propiedad `channel`
-    this.channel = channel;
-  }
+
 }
 
 class PushNotification extends Notification {
   override notify(message: string): void {
     console.log('\n%cNotificación de Push:', COLORS.green);
-    // TODO: Enviar el mensaje a través del canal
     this.channel.send(message)
   }
 
-  override setChannel(channel: NotificationChannel): void {
-    // TODO: Asignar el canal a la propiedad `channel`
-    this.setChannel(channel)
-  }
 }
 
 // 5. Código Cliente para Probar el Bridge
