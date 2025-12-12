@@ -10,41 +10,46 @@
  * https://refactoring.guru/es/design-patterns/prototype
  */
 
-class Document {
-  public title: string;
-  private content: string;
-  public author: string;
+class MyDocument {
+    public title: string;
+    private content: string;
+    public author: string;
 
-  constructor(title: string, content: string, author: string) {
-    this.title = title;
-    this.content = content;
-    this.author = author;
-  }
+    constructor(title: string, content: string, author: string) {
+        this.title = title;
+        this.content = content;
+        this.author = author;
+    }
 
-  clone(): Document {
-    return new Document(this.title, this.content, this.author);
-  }
+    // shite fn que permite clonar sin perder el ADN
+    clone(): MyDocument{
+        return new MyDocument(
+            this.title,
+            this.content,
+            this.author
+        )
+    }
 
-  displayInfo() {
-    console.log(`
-      Title: ${this.title}
-      Content: ${this.content}
-      Author: ${this.author}
-    `);
-  }
+    displayInfo(){
+        console.log(`
+            Title: ${this.title}
+            Content: ${this.content}
+            Author: ${this.author}
+        `)
+    }
 }
+
 
 function main() {
-  const document1 = new Document('Cotización', '500 dólares', 'Fernando');
+    const document1 = new MyDocument('Cotización', '500 Dolares', 'Nikolas')
 
-  console.log({ document1 });
-  document1.displayInfo();
+    console.log({document1})
+    document1.displayInfo()
 
-  const document2 = document1.clone();
-  document2.title = 'Nueva cotización';
-
-  console.log({ document2 });
-  document2.displayInfo();
+    const document2 = document1.clone()
+    document2.author = "seba"
+    console.log({document2})
+    document2.displayInfo()
 }
 
-main();
+main()

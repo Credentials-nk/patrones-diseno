@@ -10,7 +10,7 @@
  * * de objetos que debe crear.
  *
  * https://refactoring.guru/es/design-patterns/factory-method
- */
+ */ 34
 
 /**
  * 	!Descripción:
@@ -35,14 +35,27 @@ interface Report {
 // Implementar SalesReport e InventoryReport
 
 class SalesReport implements Report {
+  // TODO: implementar el método e imprimir en consola:
+  // 'Generando reporte de ventas...'
   generate(): void {
-    console.log('%cGenerando reporte de ventas...', COLORS.green);
+    console.log('Generando reporte de %cventas...', COLORS.pink)
   }
+
 }
 
 class InventoryReport implements Report {
+  // TODO: implementar el método e imprimir en consola:
+  // 'Generando reporte de inventario...'
   generate(): void {
-    console.log('%cGenerando reporte de inventario...', COLORS.orange);
+    console.log('Generando reporte de %cinventario...', COLORS.orange)
+  }
+}
+
+class ContableReport implements Report {
+  // TODO: implementar el método e imprimir en consola:
+  // 'Generando reporte de inventario...'
+  generate(): void {
+    console.log('Generando reporte de %ccontable...', COLORS.red)
   }
 }
 
@@ -61,13 +74,19 @@ abstract class ReportFactory {
 
 class SalesReportFactory extends ReportFactory {
   createReport(): Report {
-    return new SalesReport();
+    return new SalesReport()
   }
 }
 
 class InventoryReportFactory extends ReportFactory {
   createReport(): Report {
-    return new InventoryReport();
+    return new InventoryReport()
+  }
+}
+
+class ContableReportFactory extends ReportFactory {
+  createReport(): Report {
+    return new ContableReport()
   }
 }
 
@@ -76,12 +95,16 @@ class InventoryReportFactory extends ReportFactory {
 function main() {
   let reportFactory: ReportFactory;
 
-  const reportType = prompt('¿Qué tipo de reporte deseas? (sales/inventory)');
+  const reportType = prompt(
+    '¿Qué tipo de reporte deseas? (sales/inventory/contable)');
 
   if (reportType === 'sales') {
     reportFactory = new SalesReportFactory();
-  } else {
+  } else if (reportType === 'inventory') {    
     reportFactory = new InventoryReportFactory();
+  } {
+    reportFactory = new ContableReportFactory();
+    
   }
 
   reportFactory.generateReport();

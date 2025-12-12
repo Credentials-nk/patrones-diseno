@@ -1,17 +1,19 @@
+
+
 class ConfigManager {
-  private config: Record<string, string> = {};
+    private config: Record<string, string> = {}
 
-  public setConfig(key: string, value: string): void {
-    this.config[key] = value;
-  }
+    public setConfig(key: string, value:string): void{
+        this.config[key] = value;
+    }
 
-  public getConfig(key: string): string | null {
-    return this.config[key];
-  }
+    public getConfig(key: string): string | null{
+        return this.config[key];
+    }
 
-  public getAllConfig(): Record<string, string> {
-    return { ...this.config };
-  }
+    public getAllConfig(): Record<string, string>{
+        return {...this.config}
+    }
 }
 
-export const configManager = new ConfigManager();
+export const configManeger = new ConfigManager()
