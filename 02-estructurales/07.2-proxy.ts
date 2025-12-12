@@ -8,10 +8,17 @@
  * * para acceder a ciertos métodos o propiedades.
  *
  * https://refactoring.guru/es/design-patterns/proxy
- *
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
+
+enum ACCESS_LEVEL {
+  user = "user",
+  admin = "admin",
+  moderator = 'moderator'
+}
+
+type RoleType = `${ACCESS_LEVEL}`;
 
 // 1. Interfaz Document
 interface Document {
@@ -34,23 +41,37 @@ class ConfidentialDocument implements Document {
 // 3. Clase Proxy - DocumentProxy
 class DocumentProxy implements Document {
   private document: ConfidentialDocument;
+  // TODO: Implementar private mustHaveRole: string;
+  private mustHaveRole: RoleType[]
 
   // TODO: Implementar el constructor de la clase DocumentProxy
+  constructor(document: ConfidentialDocument, mustHaveRole: RoleType[] | RoleType){
+    this.document = document;
+    this.mustHaveRole = Array.isArray(mustHaveRole) ? mustHaveRole : [mustHaveRole];
+  }
 
   displayContent(user: User): void {
     // TODO: Implementar la lógica para verificar si el usuario tiene permisos
     // Sólo si es admin puede ver el contenido
     // Caso contrario, mostrar un mensaje de acceso denegado:
     // EJ: `%cAcceso denegado. ${user.getName()}, no tienes permisos suficientes para ver este documento.`,
+    if (this.mustHaveRole.includes(user.getRole())) {
+      this.document.displayContent();
+    } else {
+      console.log(
+        `%cAcceso denegado. ${user.getName()}, no tienes permisos suficientes para ver este documento.`,
+        COLORS.red,
+      );
+    }
   }
 }
 
 // 4. Clase que representa al Usuario - User
 class User {
   private name: string;
-  private role: 'admin' | 'user';
+  private role: RoleType;
 
-  constructor(name: string, role: 'admin' | 'user') {
+  constructor(name: string, role: RoleType) {
     this.name = name;
     this.role = role;
   }
@@ -59,7 +80,7 @@ class User {
     return this.name;
   }
 
-  getRole(): string {
+  getRole(): RoleType {
     return this.role;
   }
 }
@@ -68,17 +89,17 @@ class User {
 
 function main() {
   const confidentialDoc = new ConfidentialDocument(
-    'Este es el contenido confidencial del documento.'
+    "Este es el contenido confidencial del documento.",
   );
-  const proxy = new DocumentProxy(confidentialDoc);
+  const proxy = new DocumentProxy(confidentialDoc, ["moderator", 'user']);
 
-  const user1 = new User('Juan', 'user');
-  const user2 = new User('Ana', 'admin');
+  const user1 = new User("Juan", "user");
+  const user2 = new User("Ana", "admin");
 
-  console.log('Intento de acceso del usuario 1:');
+  console.log("Intento de acceso del usuario 1:");
   proxy.displayContent(user1); // Debería denegar el acceso
 
-  console.log('\nIntento de acceso del usuario 2:');
+  console.log("\nIntento de acceso del usuario 2:");
   proxy.displayContent(user2); // Debería permitir el acceso
 }
 
