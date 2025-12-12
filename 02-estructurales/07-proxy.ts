@@ -8,16 +8,15 @@
  * * para acceder a ciertos métodos o propiedades.
  *
  * https://refactoring.guru/es/design-patterns/proxy
- *
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 class Player {
-  name: string;
-  level: number;
-
-  constructor(name: string, level: number) {
+  constructor(
+    public name: string,
+    public level: number,
+  ) {
     this.name = name;
     this.level = level;
   }
@@ -29,43 +28,41 @@ interface Room {
 
 class SecretRoom implements Room {
   enter(player: Player): void {
-    console.log(`%cBienvenido a la sala secreta, ${player.name}`, COLORS.blue);
-    console.log(`Una gran enemigo te espera`);
+    console.log(`%cBienvenido a la sala secreta ${player.name}`, COLORS.blue);
+    console.log("Un gran enemigo te espera!");
   }
 }
 
-// 3. Clase Proxy - Magic Portal
+// Proxy Class - magic Portal
 class MagicPortal implements Room {
-  private secretRom: Room;
+  private secretRoom: Room;
 
-  constructor(room: Room) {
-    this.secretRom = room;
+  constructor(secretRoom: Room) {
+    this.secretRoom = secretRoom;
   }
 
   enter(player: Player): void {
     if (player.level >= 10) {
-      this.secretRom.enter(player);
-      return;
+        this.secretRoom.enter(player)
+        return;
     }
 
-    console.log(
-      `%cLo siento mucho ${player.name}, Tu nivel ${player.level}, es muy bajo, necesitas nivel 10`,
-      COLORS.red
-    );
+    console.log(`%cLo siento mucho ${player.name} tu nivel ${player.level} es muy bajo.`, COLORS.red)
   }
+
 }
 
 function main() {
-  const portal = new MagicPortal(new SecretRoom()); // Proxy
+    const portal = new MagicPortal(new SecretRoom())
 
-  const player1 = new Player('Aventurero A', 5);
-  const player2 = new Player('Aventurero B', 15);
+    const player1 = new Player('nikodev', 10)
+    const player2 = new Player('martin', 9)
 
-  console.log('%cAventurero A intenta entrar al portal', COLORS.blue);
-  portal.enter(player1);
+    console.log(`\n%c${player2.name} intenta entrar al portal `, COLORS.red)
+    portal.enter(player2)
 
-  console.log('%c\nAventurero B intenta entrar al portal', COLORS.blue);
-  portal.enter(player2);
+    console.log(`\n%c${player1.name} intenta entrar al portal`, COLORS.green)
+    portal.enter(player1)
 }
 
-main();
+main()

@@ -22,30 +22,41 @@ interface Character {
 // Representa un personaje básico sin accesorios
 // TODO: Implementar la interfaz Character
 class BasicCharacter implements Character {
+  // TODO: Implementar los métodos de la interfaz
+  // getDescription: return 'Personaje básico';
+  // TODO: Implementar los métodos de la interfaz
+  // getStats: return { attack: 10, defense: 10 };  
   getDescription(): string {
-    return 'Personaje básico';
+    return 'Personaje básico'
+  }
+  getStats(){
+    return { attack: 10, defense: 10 }
   }
 
-  getStats(): { attack: number; defense: number } {
-    return { attack: 10, defense: 10 };
-  }
 }
 
 // 3. Clase Decoradora CharacterDecorator
 // Actúa como base para los decoradores específicos
 abstract class CharacterDecorator implements Character {
+  // Protected para que las clases hijas puedan acceder a la propiedad
+  // Private no permitiría que las clases hijas accedan a la propiedad
+  // TODO: Definir la propiedad protected character de tipo Character
   protected character: Character;
 
-  constructor(character: Character) {
-    this.character = character;
+  // TODO: Definir el constructor que recibe un personaje de tipo Character
+  constructor(character: Character){
+    this.character = character
   }
-
+  // TODO: Implementar los métodos de la interfaz Character, pero retornando
+  // la descripción y estadísticas del personaje decorado
   getDescription(): string {
-    return this.character.getDescription();
+    return this.character.getDescription()
   }
 
+  // TODO: Implementar los métodos de la interfaz Character
   getStats(): { attack: number; defense: number } {
-    return this.character.getStats();
+    // throw new Error('Method not implemented.');
+    return this.character.getStats()
   }
 }
 

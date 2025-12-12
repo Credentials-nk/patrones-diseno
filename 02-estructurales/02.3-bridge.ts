@@ -9,16 +9,13 @@
  *
  * https://refactoring.guru/es/design-patterns/bridge
  */
-
 import { COLORS } from '../helpers/colors.ts';
 
-// 1. Interfaz NotificationChannel
-// Define el método `send`, que cada canal de comunicación implementará.
+
 interface NotificationChannel {
   send(message: string): void;
 }
 
-// 2. Implementaciones de Canales de Comunicación
 
 class EmailChannel implements NotificationChannel {
   send(message: string): void {
@@ -38,47 +35,41 @@ class PushNotificationChannel implements NotificationChannel {
   }
 }
 
-// 3. Clase Abstracta Notification
-// Define la propiedad `channel` y el método `notify`
 
 abstract class Notification {
-  protected channels: NotificationChannel[];
-
-  constructor(channels: NotificationChannel[]) {
-    this.channels = channels;
+  constructor(protected channels: NotificationChannel[]){
+    this.channels = channels
   }
 
-  abstract notify(message: string): void;
-  abstract addChannel(channel: NotificationChannel): void;
+  abstract notify(message: string): void
+  abstract addtChannel(channel: NotificationChannel):void;
 }
+
 
 class AlertNotification extends Notification {
   override notify(message: string): void {
-    console.log('\n%cNotificación de alerta', COLORS.red);
-    this.channels.forEach((channel) => channel.send(message));
+    console.log('\n%cNotificación de alerta', COLORS.red)
+    this.channels.forEach(channel => channel.send(message)) 
   }
 
-  override addChannel(channel: NotificationChannel): void {
-    this.channels.push(channel);
+  override addtChannel(channel: NotificationChannel): void {
+    this.channels.push(channel)
   }
+
 }
+
 
 function main() {
-  const channels = [
-    new EmailChannel(),
-    new SMSChannel(),
-    new PushNotificationChannel(),
-    new PushNotificationChannel(),
-    new PushNotificationChannel(),
-    new SMSChannel(),
-    new EmailChannel(),
-  ];
+    const channels = [
+        new EmailChannel,
+        new SMSChannel
+    ]
 
-  const alert = new AlertNotification(channels);
+    const alert = new AlertNotification(channels)
 
-  alert.notify('Alguien en frente de la casa');
+    alert.addtChannel(new PushNotificationChannel)
 
-  console.log('\n');
+    alert.notify('Debes sacar a pasear el perro!')
 }
 
-main();
+main()

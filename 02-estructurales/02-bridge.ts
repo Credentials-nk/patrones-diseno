@@ -10,73 +10,74 @@
  * https://refactoring.guru/es/design-patterns/bridge
  */
 
-import { COLORS } from '../helpers/colors.ts';
+import { COLORS } from "../helpers/colors.ts";
 
 interface Ability {
-  use(): void;
+    use(): void
 }
 
 class SwordAttack implements Ability {
   use(): void {
-    console.log('Ataca con una %cespada ferozmente', COLORS.blue);
+    console.log('%cAttacks fiercely with a sword', COLORS.blue)
   }
 }
 
 class AxeAttack implements Ability {
   use(): void {
-    console.log('Ataca con una %chacha brutalmente', COLORS.blue);
+    console.log('%cAttacks with an axe', COLORS.orange)
   }
 }
 
 class MagicSpell implements Ability {
   use(): void {
-    console.log('Lanza un hechizo %cmágico poderoso', COLORS.green);
+    console.log('%cCasts a powerful magic spell', COLORS.violet)
   }
 }
 
 class FireballSpell implements Ability {
   use(): void {
-    console.log('Lanza una %cbola de fuego', COLORS.green);
+    console.log('%claunches a powerful fireball', COLORS.red)
   }
 }
 
 abstract class Character {
-  protected ability: Ability;
+    protected ability: Ability;
 
-  constructor(ability: Ability) {
-    this.ability = ability;
-  }
+    constructor(ability: Ability){
+        this.ability = ability;
+    }
 
-  setAbility(ability: Ability): void {
-    this.ability = ability;
-  }
+    setAbility(ability: Ability): void{
+        this.ability = ability;
+    }
 
-  abstract performAbility(): void;
+    abstract performAbility():void;
+
 }
 
-class Warrior extends Character {
+class Warrior extends Character{
   override performAbility(): void {
-    console.log('\nEl guerrero está listo para luchar');
-    this.ability.use();
-  }
+    console.log('\n%cThe warrior is ready to fight', COLORS.brown)
+    this.ability.use()
+  }    
 }
 
-class Mage extends Character {
+class Mage extends Character{
   override performAbility(): void {
-    console.log('\nEl mago prepara su magia');
-    this.ability.use();
-  }
+    console.log('\n%cThe magician prepares his attack', COLORS.green)
+    this.ability.use()
+  }    
 }
+
 
 function main() {
-  const warrior = new Warrior(new SwordAttack());
-  warrior.performAbility();
+    const warrior = new Warrior(new AxeAttack)
 
-  warrior.setAbility(new AxeAttack());
-  warrior.performAbility();
+    warrior.performAbility()
 
-  const mage = new Mage(new FireballSpell());
-  mage.performAbility();
+    const mage = new Mage(new FireballSpell)
+
+    mage.performAbility()
 }
 
-main();
+main()

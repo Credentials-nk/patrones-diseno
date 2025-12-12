@@ -46,40 +46,28 @@ class MercadoPagoService {
 
 // Adaptador para PayPal
 class PayPalAdapter implements PaymentProcessor {
-  private paypalService: PayPalService;
-
-  constructor(service: PayPalService) {
-    this.paypalService = service;
-  }
+  private serviceMethod = new PayPalService()
 
   processPayment(amount: number): void {
-    this.paypalService.sendPayment(amount);
+    this.serviceMethod.sendPayment(amount)
   }
 }
 
 // Adaptador para Stripe
-class StripeAdapter implements PaymentProcessor {
-  private stripeService: StripeService;
-
-  constructor(service: StripeService) {
-    this.stripeService = service;
-  }
+class StripeAdapter  implements PaymentProcessor{
+  private serviceMethod = new StripeService()
 
   processPayment(amount: number): void {
-    this.stripeService.makeCharge(amount);
+    this.serviceMethod.makeCharge(amount)
   }
 }
 
 // Adaptador para MercadoPago
 class MercadoPagoAdapter implements PaymentProcessor {
-  private mercadoPagoService: MercadoPagoService;
-
-  constructor(service: MercadoPagoService) {
-    this.mercadoPagoService = service;
-  }
+  private serviceMethod = new MercadoPagoService()
 
   processPayment(amount: number): void {
-    this.mercadoPagoService.pay(amount);
+    this.serviceMethod.pay(amount)
   }
 }
 
@@ -89,15 +77,9 @@ function main() {
   const paymentAmount = 100;
 
   // TODO: Agregar los adaptadores para los servicios de pago
-  const paypalProcessor: PaymentProcessor = new PayPalAdapter(
-    new PayPalService()
-  );
-  const stripeProcessor: PaymentProcessor = new StripeAdapter(
-    new StripeService()
-  );
-  const mercadoPagoProcessor: PaymentProcessor = new MercadoPagoAdapter(
-    new MercadoPagoService()
-  );
+  const paypalProcessor: PaymentProcessor = new PayPalAdapter();
+  const stripeProcessor: PaymentProcessor = new StripeAdapter();
+  const mercadoPagoProcessor: PaymentProcessor = new MercadoPagoAdapter();
 
   // Procesar pagos con los diferentes servicios
   // Los 3 procesadores de pago trabajan exactamente igual después de adaptaros
