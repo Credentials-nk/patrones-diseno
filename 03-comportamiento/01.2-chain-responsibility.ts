@@ -10,6 +10,16 @@
 
 import { COLORS } from '../helpers/colors.ts';
 
+
+
+enum SpendingLimitScope {
+  SUPERVISOR = 1000,
+  MANAGER = 5000,
+  DIRECTOR = Infinity
+}
+
+type SpendingLimitScopeType = `${SpendingLimitScope}`
+
 // 1. Interfaz Approver
 interface Approver {
   setNext(approver: Approver): Approver;
@@ -46,7 +56,12 @@ class Supervisor extends BaseApprover {
   // TODO: Implementar el método approveRequest si el monto es menor o igual a 1000
   // TODO: Si el monto es mayor a 1000, pasar la solicitud al siguiente aprobador
   override approveRequest(amount: number): void {
-    throw new Error('Method not implemented.');
+    if (amount <= SpendingLimitScope.SUPERVISOR) {
+      console.log('%cEl monto ha sido aprobado por el supervisor.', COLORS.green)
+      return;
+    }
+    console.log('%cDerivando al manager.', COLORS.yellow)
+    super.next(amount)
   }
 }
 
@@ -55,12 +70,25 @@ class Manager extends BaseApprover {
   // TODO: Si el monto es mayor a 5000, pasar la solicitud al siguiente aprobador
 
   override approveRequest(amount: number): void {
-    throw new Error('Method not implemented.');
+    if (amount <= SpendingLimitScope.MANAGER) {
+      console.log('%cEl monto ha sido aprobado por el manager.', COLORS.green)
+      return;
+    }
+    console.log('%cDerivando al director.', COLORS.yellow)
+    super.next(amount)
   }
 }
 
 class Director extends BaseApprover {
   // TODO: Implementar el método approveRequest si el monto
+  override approveRequest(amount: number): void {
+    if (amount < SpendingLimitScope.DIRECTOR) {
+      console.log('%cEl monto ha sido aprobado por el director.', COLORS.green)
+      return;
+    }
+    console.log(`%cEl monto debe ser menor a ${Infinity}.`, COLORS.red)
+    super.next(amount)
+  }
 }
 
 // 4. Código Cliente para probar la cadena de responsabilidad
@@ -82,6 +110,10 @@ function main() {
 
   console.log('\nSolicitud de compra de $7000:');
   supervisor.approveRequest(7000);
+  
+  
+  console.log(`\nSolicitud de compra ${Infinity}:`);
+  supervisor.approveRequest(Infinity);
 }
 
 main();
