@@ -30,9 +30,17 @@ class CardCollection {
 
   //TODO: Implementación del iterador usando Symbol.iterator
   // Symbol.iterator (): IterableIterator<Card>
+  *[Symbol.iterator](): IterableIterator<Card> {
+    yield* this.cards;
+  }
 
   // TODO: Implementación del iterador usando Generadores
   // *getCard(): IterableIterator<Card>
+  *getCard(): IterableIterator<Card> {
+    for (const card of this.cards) {
+      yield card;
+    }
+  }
 }
 
 // Código Cliente para probar el iterador
@@ -48,7 +56,10 @@ function main(): void {
 
   // Recorrer la colección en orden usando for...of
   console.log('Recorriendo la colección de cartas:');
-  for (const card of deck) {
+  // for (const card of deck) {
+  //   console.log(`Carta: ${card.name}, Valor: ${card.value}`);
+  // }
+  for (const card of deck.getCard()) {
     console.log(`Carta: ${card.name}, Valor: ${card.value}`);
   }
 }
